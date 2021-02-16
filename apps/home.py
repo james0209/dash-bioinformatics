@@ -1,0 +1,20 @@
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+
+from app import app
+
+layout = html.Div([
+    html.H6("Change the value in the text box to see callbacks in action!"),
+    html.Div(["Input: ",
+              dcc.Input(id='my-input', value='initial value', type='text')]),
+    html.Br(),
+    html.Div(id='my-output'),
+])
+
+#The @app.callback decorator needs to be directly above the callback function declaration.
+@app.callback(
+    Output('my-output', 'children'),
+    Input('my-input', 'value'))
+def display_value(value):
+    return 'Output: {}'.format(value)
