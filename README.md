@@ -17,7 +17,7 @@ git clone https://github.com/james0209/dash-bioinformatics.git
 ### Install
 
 ```shell script
-conda create --name <env> --file <this file>
+conda create --name <env> --file requirements.txt
 conda activate <env>
 pip install -e .
 ```

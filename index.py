@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 
 from app import app
-from apps import home, app2, onlineBlast, sequenceViewer, uploadFile
+from apps import home, app2, onlineBlast, sequenceViewer, uploadFile, DataTable
 
 
 # building the navigation bar
@@ -14,6 +14,7 @@ dropdown = dbc.DropdownMenu(
         dbc.DropdownMenuItem("Home", href="/home"),
         dbc.DropdownMenuItem("Protein Visulization", href="/apps/app2"),
         dbc.DropdownMenuItem("Online BLAST", href="/apps/onlineBlast"),
+        dbc.DropdownMenuItem("DataTable", href="/apps/DataTable"),
     ],
     nav = True,
     in_navbar = True,
@@ -80,8 +81,12 @@ def display_page(pathname):
         return app2.layout
     elif pathname == '/apps/onlineBlast':
         return onlineBlast.layout
-    elif pathname == '/apps/onlineBlast':
+    elif pathname == '/apps/uploadFile':
         return uploadFile.layout
+    elif pathname == '/apps/sequenceViewer':
+        return sequenceViewer.layout
+    elif pathname == '/apps/DataTable':
+        return DataTable.layout
     else:
         return '404'
 
