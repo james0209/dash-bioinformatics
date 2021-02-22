@@ -14,7 +14,7 @@ from Bio import pairwise2
 from Bio import File
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from Bio.SeqUtils import GC,MeltingTemp,GC_skew,seq3
+from Bio.SeqUtils import GC, MeltingTemp, GC_skew, seq3
 
 import numpy as np
 import matplotlib
@@ -26,28 +26,29 @@ from app import app
 
 from apps import proteinReader as pr
 
-seq = "ABCD"
+seq = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-layout = html.Div([
-    dbc.Container([
-    dashbio.SequenceViewer(
-        id='my-sequence-viewer',
-        sequence=seq
-    ),
-    html.Div(id='sequence-viewer-output')
-    ]),
-])
+layout = html.Div(
+    [
+        dbc.Container(
+            [
+                dashbio.SequenceViewer(id="my-sequence-viewer", sequence=seq),
+                html.Div(id="sequence-viewer-output"),
+            ]
+        ),
+    ]
+)
 
 
 @app.callback(
-    dash.dependencies.Output('sequence-viewer-output', 'children'),
-    [dash.dependencies.Input('my-sequence-viewer', 'mouseSelection')]
+    dash.dependencies.Output("sequence-viewer-output", "children"),
+    [dash.dependencies.Input("my-sequence-viewer", "mouseSelection")],
 )
 def update_output(value):
     if value is None or len(value) == 0:
-        return 'There is no mouse selection.'
-    return 'The mouse selection is {}.'.format(value['selection'])
+        return "There is no mouse selection."
+    return "The mouse selection is {}.".format(value["selection"])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run_server(debug=True)

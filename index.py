@@ -12,13 +12,13 @@ from apps import home, app2, onlineBlast, sequenceViewer, uploadFile, DataTable
 dropdown = dbc.DropdownMenu(
     children=[
         dbc.DropdownMenuItem("Home", href="/home"),
-        dbc.DropdownMenuItem("Protein Visulization", href="/apps/app2"),
+        dbc.DropdownMenuItem("Protein Visulization", href="/apps/sequenceViewer"),
         dbc.DropdownMenuItem("Online BLAST", href="/apps/onlineBlast"),
         dbc.DropdownMenuItem("DataTable", href="/apps/DataTable"),
     ],
-    nav = True,
-    in_navbar = True,
-    label = "Explore",
+    nav=True,
+    in_navbar=True,
+    label="Explore",
 )
 
 navbar = dbc.Navbar(
@@ -28,7 +28,7 @@ navbar = dbc.Navbar(
                 # Use row and col to control vertical alignment of logo / brand
                 dbc.Row(
                     [
-                        #dbc.Col(html.Img(src="/assets/virus.png", height="30px")),
+                        # dbc.Col(html.Img(src="/assets/virus.png", height="30px")),
                         dbc.Col(dbc.NavbarBrand("Protein Bioinformatics App", className="ml-2")),
                     ],
                     align="center",
@@ -40,7 +40,9 @@ navbar = dbc.Navbar(
             dbc.Collapse(
                 dbc.Nav(
                     # right align dropdown menu with ml-auto className
-                    [dropdown], className="ml-auto", navbar=True
+                    [dropdown],
+                    className="ml-auto",
+                    navbar=True,
                 ),
                 id="navbar-collapse2",
                 navbar=True,
@@ -52,10 +54,12 @@ navbar = dbc.Navbar(
     className="mb-4",
 )
 
+
 def toggle_navbar_collapse(n, is_open):
     if n:
         return not is_open
     return is_open
+
 
 for i in [2]:
     app.callback(
@@ -65,30 +69,26 @@ for i in [2]:
     )(toggle_navbar_collapse)
 
 
-app.layout = html.Div([
-    dcc.Location(id='url', refresh=False),
-    navbar,
-    html.Div(id='page-content')
-])
+app.layout = html.Div([dcc.Location(id="url", refresh=False), navbar, html.Div(id="page-content")])
 
 
-@app.callback(Output('page-content', 'children'),
-              Input('url', 'pathname'))
+@app.callback(Output("page-content", "children"), Input("url", "pathname"))
 def display_page(pathname):
-    if pathname == '/':
+    if pathname == "/":
         return home.layout
-    elif pathname == '/apps/app2':
+    elif pathname == "/apps/app2":
         return app2.layout
-    elif pathname == '/apps/onlineBlast':
+    elif pathname == "/apps/onlineBlast":
         return onlineBlast.layout
-    elif pathname == '/apps/uploadFile':
+    elif pathname == "/apps/uploadFile":
         return uploadFile.layout
-    elif pathname == '/apps/sequenceViewer':
+    elif pathname == "/apps/sequenceViewer":
         return sequenceViewer.layout
-    elif pathname == '/apps/DataTable':
+    elif pathname == "/apps/DataTable":
         return DataTable.layout
     else:
-        return '404'
+        return "404"
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app.run_server(debug=True)

@@ -11,7 +11,7 @@ from Bio import pairwise2
 from Bio import File
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from Bio.SeqUtils import GC,MeltingTemp,GC_skew,seq3
+from Bio.SeqUtils import GC, MeltingTemp, GC_skew, seq3
 
 import numpy as np
 import matplotlib
@@ -25,18 +25,20 @@ record_dict = SeqIO.index("SubsetDatabase10.fasta", "fasta")
 input_seq_iterator = SeqIO.parse("SubsetDatabase10.fasta", "fasta")
 
 
-layout = html.Div([
-    html.H1('Hello Dash'),("Number of entries in database: %s" % (len(record_dict))),
-    html.H6("Change the value in the text box to see callbacks in action!"),
-    html.Div(["Input: ",
-              dcc.Input(id='app2-input', value='initial value', type='text')]),
-    html.Br(),
-    html.Div(id='app2-output'),
-])
+layout = html.Div(
+    [
+        html.H1("Hello Dash"),
+        ("Number of entries in database: %s" % (len(record_dict))),
+        html.H6("Change the value in the text box to see callbacks in action!"),
+        html.Div(
+            ["Input: ", dcc.Input(id="app2-input", value="initial value", type="text")]
+        ),
+        html.Br(),
+        html.Div(id="app2-output"),
+    ]
+)
 
-#The @app.callback decorator needs to be directly above the callback function declaration.
-@app.callback(
-    Output('app2-output', 'children'),
-    Input('app2-input', 'value'))
+# The @app.callback decorator needs to be directly above the callback function declaration.
+@app.callback(Output("app2-output", "children"), Input("app2-input", "value"))
 def display_value(value):
-    return 'Output: {}'.format(value)
+    return "Output: {}".format(value)

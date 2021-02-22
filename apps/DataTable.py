@@ -2,46 +2,120 @@ import dash
 from dash.dependencies import Input, Output
 import dash_table
 import dash_html_components as html
-import datetime
+import dash_bootstrap_components as dbc
 
 from app import app
 
 import pandas as pd
 
-#TODO: Look into having csv as a pandas dataframe and use the derived_filter_query_structure in conjunction with pandas filters
+# TODO: Look into having csv as a pandas dataframe and use the derived_filter_query_structure in conjunction with pandas filters
 # https://dash.plotly.com/datatable/filtering
+
+# TODO: Make the Protein names href and link to the Protein Visulization page, passing the name as a paramter? To link them together
 
 
 df = pd.read_csv("https://raw.githubusercontent.com/james0209/dash-bioinformatics/main/assets/peptides.csv")
-df = df[['Protein', 'Peptide', '35a12_90128_1_1_F (F061400)', '35a12_90128_2_1_H (F061401)',
- '35a12_90128_3_1_L (F061402)', '35a12_90128_3_2_L (F061403)', '35a12_Cu10_1_1_F (F061404)',
-  '35a12_Cu10_2_1_H (F061405)', '35a12_Cu10_3_1_L (F061406)', '35a12_Cu10_3_2_L (F061407)']]  # prune columns for example
+df = df[
+    [
+        "Protein",
+        "Peptide",
+        "35a12_90128_1_1_F (F061400)",
+        "35a12_90128_2_1_H (F061401)",
+        "35a12_90128_3_1_L (F061402)",
+        "35a12_90128_3_2_L (F061403)",
+        "35a12_Cu10_1_1_F (F061404)",
+        "35a12_Cu10_2_1_H (F061405)",
+        "35a12_Cu10_3_1_L (F061406)",
+        "35a12_Cu10_3_2_L (F061407)",
+    ]
+]  # prune columns for example
 
-layout = dash_table.DataTable(
-    columns=[
-        {'name': 'Protein', 'id': 'Protein', 'type': 'text'},
-        {'name': 'Peptide', 'id': 'Peptide', 'type': 'text'},
-        {'name': '35a12_90128_1_1_F (F061400)', 'id': '35a12_90128_1_1_F (F061400)', 'type': 'numeric'},
-        {'name': '35a12_90128_2_1_H (F061401)', 'id': '35a12_90128_2_1_H (F061401)', 'type': 'numeric'},
-        {'name': '35a12_90128_3_1_L (F061402)', 'id': '35a12_90128_3_1_L (F061402)', 'type': 'numeric'},
-        {'name': '35a12_90128_3_2_L (F061403)', 'id': '35a12_90128_3_2_L (F061403)', 'type': 'numeric'},
-        {'name': '35a12_Cu10_1_1_F (F061404)', 'id': '35a12_Cu10_1_1_F (F061404)', 'type': 'numeric'},
-        {'name': '35a12_Cu10_2_1_H (F061405)', 'id': '35a12_Cu10_2_1_H (F061405)', 'type': 'numeric'},
-        {'name': '35a12_Cu10_3_1_L (F061406)', 'id': '35a12_Cu10_3_1_L (F061406)', 'type': 'numeric'},
-        {'name': '35a12_Cu10_3_2_L (F061407)', 'id': '35a12_Cu10_3_2_L (F061407)', 'type': 'numeric'}
-    ],
-    data=df.to_dict('records'),
-    filter_action='native',
-
-    style_table={
-        'height': 400,
-    },
-    style_data={
-        'width': '150px', 'minWidth': '150px', 'maxWidth': '150px',
-        'overflow': 'hidden',
-        'textOverflow': 'ellipsis',
-    }
+layout = html.Div(
+    [
+        dbc.Container(
+            [
+                dash_table.DataTable(
+                    id="datatable-interactivity",
+                    columns=[
+                        {"name": "Protein", "id": "Protein", "type": "text"},
+                        {"name": "Peptide", "id": "Peptide", "type": "text"},
+                        {
+                            "name": "35a12_90128_1_1_F (F061400)",
+                            "id": "35a12_90128_1_1_F (F061400)",
+                            "type": "numeric",
+                        },
+                        {
+                            "name": "35a12_90128_2_1_H (F061401)",
+                            "id": "35a12_90128_2_1_H (F061401)",
+                            "type": "numeric",
+                        },
+                        {
+                            "name": "35a12_90128_3_1_L (F061402)",
+                            "id": "35a12_90128_3_1_L (F061402)",
+                            "type": "numeric",
+                        },
+                        {
+                            "name": "35a12_90128_3_2_L (F061403)",
+                            "id": "35a12_90128_3_2_L (F061403)",
+                            "type": "numeric",
+                        },
+                        {
+                            "name": "35a12_Cu10_1_1_F (F061404)",
+                            "id": "35a12_Cu10_1_1_F (F061404)",
+                            "type": "numeric",
+                        },
+                        {
+                            "name": "35a12_Cu10_2_1_H (F061405)",
+                            "id": "35a12_Cu10_2_1_H (F061405)",
+                            "type": "numeric",
+                        },
+                        {
+                            "name": "35a12_Cu10_3_1_L (F061406)",
+                            "id": "35a12_Cu10_3_1_L (F061406)",
+                            "type": "numeric",
+                        },
+                        {
+                            "name": "35a12_Cu10_3_2_L (F061407)",
+                            "id": "35a12_Cu10_3_2_L (F061407)",
+                            "type": "numeric",
+                        },
+                    ],
+                    data=df.to_dict("records"),
+                    filter_action="native",
+                    style_table={
+                        "height": 400,
+                    },
+                    style_data={
+                        "width": "150px",
+                        "minWidth": "150px",
+                        "maxWidth": "150px",
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                    },
+                    editable=True,
+                    sort_action="native",
+                    sort_mode="multi",
+                    column_selectable="single",
+                    row_selectable="multi",
+                    row_deletable=True,
+                    selected_columns=[],
+                    selected_rows=[],
+                    page_action="native",
+                    page_current=0,
+                    page_size=10,
+                ),
+            ]
+        )
+    ]
 )
 
-if __name__ == '__main__':
+
+@app.callback(
+    Output("datatable-interactivity", "style_data_conditional"), Input("datatable-interactivity", "selected_columns")
+)
+def update_styles(selected_columns):
+    return [{"if": {"column_id": i}, "background_color": "#D2F3FF"} for i in selected_columns]
+
+
+if __name__ == "__main__":
     app.run_server(debug=True)
