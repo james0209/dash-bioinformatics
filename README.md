@@ -17,15 +17,17 @@ git clone https://github.com/james0209/dash-bioinformatics.git
 ### Install
 
 ```shell script
-conda create --name <env> --file requirements.txt
-conda activate <env>
-pip install -e .
+git clone https://github.com/james0209/dash-bioinformatics.git
+cd dash-bioinformatics
+pip install venv
+source venv/bin/activate OR .\env\Scripts\activate
+pip install -r requirements.txt
 ```
 
 ### Run
 
 ```shell script
-python run app.py
+python3 index.py
 ```
 
 ## References

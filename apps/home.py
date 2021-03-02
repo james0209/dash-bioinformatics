@@ -19,7 +19,7 @@ layout = html.Div(
                     id="dtrue",
                     type="number",
                     debounce=True,
-                    placeholder="Debounce True",
+                    placeholder="Protein Length",
                 ),
                 html.H6("Change the value in the text box to see callbacks in action!"),
                 html.Div(["Input: ", dcc.Input(id="my-input", value="initial value", type="text")]),

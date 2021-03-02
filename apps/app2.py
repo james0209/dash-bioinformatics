@@ -30,9 +30,7 @@ layout = html.Div(
         html.H1("Hello Dash"),
         ("Number of entries in database: %s" % (len(record_dict))),
         html.H6("Change the value in the text box to see callbacks in action!"),
-        html.Div(
-            ["Input: ", dcc.Input(id="app2-input", value="initial value", type="text")]
-        ),
+        html.Div(["Input: ", dcc.Input(id="app2-input", value="initial value", type="text")]),
         html.Br(),
         html.Div(id="app2-output"),
     ]
