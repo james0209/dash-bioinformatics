@@ -7,11 +7,18 @@ import dash_bootstrap_components as dbc
 from app import app
 
 import pandas as pd
+import sqlite3
 
 # TODO: Look into having csv as a pandas dataframe and use the derived_filter_query_structure in conjunction with pandas filters
 # https://dash.plotly.com/datatable/filtering
 
 # TODO: Make the Protein names href and link to the Protein Visulization page, passing the name as a paramter? To link them together
+
+conn = sqlite3.connect("database.db")
+c = conn.cursor()
+# df = pd.DataFrame(c.fetchall(), columns=['Brand','Price'])
+dataframe = pd.read_sql("SELECT * FROM peptides", conn)
+# dataframe = pd.transforms.dataframe
 
 
 df = pd.read_csv("https://raw.githubusercontent.com/james0209/dash-bioinformatics/main/assets/peptides.csv")
@@ -32,80 +39,77 @@ df = df[
 
 layout = html.Div(
     [
-        dbc.Container(
-            [
-                dash_table.DataTable(
-                    id="datatable-interactivity",
-                    columns=[
-                        {"name": "Protein", "id": "Protein", "type": "text"},
-                        {"name": "Peptide", "id": "Peptide", "type": "text"},
-                        {
-                            "name": "35a12_90128_1_1_F (F061400)",
-                            "id": "35a12_90128_1_1_F (F061400)",
-                            "type": "numeric",
-                        },
-                        {
-                            "name": "35a12_90128_2_1_H (F061401)",
-                            "id": "35a12_90128_2_1_H (F061401)",
-                            "type": "numeric",
-                        },
-                        {
-                            "name": "35a12_90128_3_1_L (F061402)",
-                            "id": "35a12_90128_3_1_L (F061402)",
-                            "type": "numeric",
-                        },
-                        {
-                            "name": "35a12_90128_3_2_L (F061403)",
-                            "id": "35a12_90128_3_2_L (F061403)",
-                            "type": "numeric",
-                        },
-                        {
-                            "name": "35a12_Cu10_1_1_F (F061404)",
-                            "id": "35a12_Cu10_1_1_F (F061404)",
-                            "type": "numeric",
-                        },
-                        {
-                            "name": "35a12_Cu10_2_1_H (F061405)",
-                            "id": "35a12_Cu10_2_1_H (F061405)",
-                            "type": "numeric",
-                        },
-                        {
-                            "name": "35a12_Cu10_3_1_L (F061406)",
-                            "id": "35a12_Cu10_3_1_L (F061406)",
-                            "type": "numeric",
-                        },
-                        {
-                            "name": "35a12_Cu10_3_2_L (F061407)",
-                            "id": "35a12_Cu10_3_2_L (F061407)",
-                            "type": "numeric",
-                        },
-                    ],
-                    data=df.to_dict("records"),
-                    filter_action="native",
-                    style_table={
-                        "height": 400,
-                    },
-                    style_data={
-                        "width": "150px",
-                        "minWidth": "150px",
-                        "maxWidth": "150px",
-                        "overflow": "hidden",
-                        "textOverflow": "ellipsis",
-                    },
-                    editable=True,
-                    sort_action="native",
-                    sort_mode="multi",
-                    column_selectable="single",
-                    row_selectable="multi",
-                    row_deletable=True,
-                    selected_columns=[],
-                    selected_rows=[],
-                    page_action="native",
-                    page_current=0,
-                    page_size=10,
-                ),
-            ]
-        )
+        dash_table.DataTable(
+            id="datatable-interactivity",
+            # columns=[{"name": i, "id": i} for i in dataframe.columns],
+            columns=[
+                {"name": "bioentry_id", "id": "bioentry_id", "presentation": "markdown"},
+                {"name": "peptide", "id": "peptide", "type": "text"},
+                {
+                    "name": "f061400",
+                    "id": "f061400",
+                    "type": "numeric",
+                },
+                {
+                    "name": "f061401",
+                    "id": "f061401",
+                    "type": "numeric",
+                },
+                {
+                    "name": "f061402",
+                    "id": "f061402",
+                    "type": "numeric",
+                },
+                {
+                    "name": "f061403",
+                    "id": "f061403",
+                    "type": "numeric",
+                },
+                {
+                    "name": "f061404",
+                    "id": "f061404",
+                    "type": "numeric",
+                },
+                {
+                    "name": "f061405",
+                    "id": "f061405",
+                    "type": "numeric",
+                },
+                {
+                    "name": "f061406",
+                    "id": "f061406",
+                    "type": "numeric",
+                },
+                {
+                    "name": "f061407",
+                    "id": "f061407",
+                    "type": "numeric",
+                },
+            ],
+            data=dataframe.to_dict("records"),
+            filter_action="native",
+            style_table={
+                "height": 400,
+            },
+            style_data={
+                "width": "150px",
+                "minWidth": "150px",
+                "maxWidth": "150px",
+                "overflow": "hidden",
+                "textOverflow": "ellipsis",
+            },
+            editable=True,
+            sort_action="native",
+            sort_mode="multi",
+            column_selectable="single",
+            row_selectable="multi",
+            row_deletable=True,
+            selected_columns=[],
+            selected_rows=[],
+            page_action="native",
+            page_current=0,
+            page_size=10,
+        ),
     ]
 )
 
