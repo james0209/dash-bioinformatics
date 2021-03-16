@@ -1,39 +1,23 @@
 import dash_core_components as dcc
 import dash_html_components as html
-import os
-import itertools
+import dash
 from dash.dependencies import Input, Output
 
-from Bio import SeqIO
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIXML
-from Bio import pairwise2
-from Bio import File
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
-from Bio.SeqUtils import GC, MeltingTemp, GC_skew, seq3
-
-import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
-import pandas as pd
-import plotly.figure_factory as ff
 
 from app import app
-from apps import home, app2, onlineBlast, sequenceViewer
 
 blast_results = []
 
 
-def display_page(pathname):
-    if pathname == "/":
-        return home.layout
-    elif pathname == "/apps/app2":
-        return app2.layout
-    elif pathname == "/apps/onlineBlast.py":
+@app.callback(Output("loading-output-1", "children"), [Input("btn-1", "n_clicks")])
+def runBlast(n_clicks):
+    if n_clicks is not None:
         fasta_string = open("SubsetDatabase1.fasta").read()
         print("Got here")
         result_handle = NCBIWWW.qblast("blastp", "nr", fasta_string)
+        print("got here as well")
         blast_record = NCBIXML.read(result_handle)
         print("Got here2")
         # Setting the E value to parse with
@@ -47,37 +31,45 @@ def display_page(pathname):
 
                     print("Yep")
 
-                    # blast_results=([
-                    # html.H6("****Alignment****"),
-                    # html.H6("sequence:", alignment.title),
-                    # html.H6("length:", alignment.length),
-                    # html.H6("e value:", hsp.expect),
-                    # html.H6(hsp.query[0:75] + "..."),
-                    # html.H6(hsp.match[0:75] + "..."),
-                    # html.H6(hsp.sbjct[0:75] + "...")
-                    # ])
-    else:
-        return "404"
+                    blast_results = [
+                        html.H6("****Alignment****"),
+                        html.H6("sequence: " + alignment.title),
+                        html.H6("length: " + str(alignment.length)),
+                        html.H6("e value: " + hsp.expect),
+                        html.H6(hsp.query[0:75] + "..."),
+                        html.H6(hsp.match[0:75] + "..."),
+                        html.H6(hsp.sbjct[0:75] + "..."),
+                    ]
+                    return blast_results
 
 
 layout = html.Div(
     [
-        blast_results,
-        html.H6("Change the value in the text box to see callbacks in action!"),
-        html.Div(
-            [
-                "Input: ",
-                dcc.Input(id="onlineBlast-input", value="initial value", type="text"),
-            ]
-        ),
-        html.Br(),
+        html.Button("Run Online Blast", id="btn-1"),
+        dcc.Loading(id="loading-1", type="default", children=html.Div(id="loading-output-1")),
+        html.Div(id="container"),
         html.Div(id="onlineBlast-output"),
     ]
 )
 
-# The @app.callback decorator needs to be directly above the callback function declaration.
-@app.callback(
-    Output("onlineBlast-output", "children"), Input("onlineBlast-input", "value")
-)
-def display_value(value):
-    return "Output: {}".format(value)
+
+""" @app.callback(Output("container", "children"), Input("btn-1", "n_clicks"))
+def display(btn1):
+    ctx = dash.callback_context
+    if not ctx.triggered:
+        button_id = "No clicks yet"
+    else:
+        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+        runBlast(True)
+        return html.Div([html.H1("Running BLAST...")])
+
+    return html.Div(
+        [
+            html.Table(
+                [
+                    html.Tr([html.Th("Button 1"), html.Th("Most Recent Click")]),
+                    html.Tr([html.Td(btn1 or 0), html.Td(button_id)]),
+                ]
+            ),
+        ]
+    ) """

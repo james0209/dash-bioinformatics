@@ -4,17 +4,19 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 
 from app import app
-from apps import home, app2, onlineBlast, sequenceViewer, uploadFile, DataTable
+from apps import home, app2, onlineBlast, sequenceViewer, DataTable, localBlast, dotPlot
 
 
 # building the navigation bar
 # https://github.com/facultyai/dash-bootstrap-components/blob/master/examples/advanced-component-usage/Navbars.py
 dropdown = dbc.DropdownMenu(
     children=[
-        dbc.DropdownMenuItem("Home", href="/home"),
+        dbc.DropdownMenuItem("Home", href="/"),
+        dbc.DropdownMenuItem("View all Proteins", href="/apps/DataTable"),
         dbc.DropdownMenuItem("Protein Visulization", href="/apps/sequenceViewer"),
+        dbc.DropdownMenuItem("Local BLAST", href="/apps/localBlast"),
         dbc.DropdownMenuItem("Online BLAST", href="/apps/onlineBlast"),
-        dbc.DropdownMenuItem("DataTable", href="/apps/DataTable"),
+        dbc.DropdownMenuItem("Dot Plot", href="/apps/dotPlot"),
     ],
     nav=True,
     in_navbar=True,
@@ -80,12 +82,14 @@ def display_page(pathname):
         return app2.layout
     elif pathname == "/apps/onlineBlast":
         return onlineBlast.layout
-    elif pathname == "/apps/uploadFile":
-        return uploadFile.layout
+    elif pathname == "/apps/localBlast":
+        return localBlast.layout
     elif pathname == "/apps/sequenceViewer":
         return sequenceViewer.layout
     elif pathname == "/apps/DataTable":
         return DataTable.layout
+    elif pathname == "/apps/dotPlot":
+        return dotPlot.layout
     else:
         return "404"
 

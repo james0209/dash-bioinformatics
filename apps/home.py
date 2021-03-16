@@ -21,16 +21,16 @@ layout = html.Div(
                     debounce=True,
                     placeholder="Protein Length",
                 ),
-                html.H6("Change the value in the text box to see callbacks in action!"),
-                html.Div(["Input: ", dcc.Input(id="my-input", value="initial value", type="text")]),
-                html.Br(),
-                html.Div(id="my-output"),
+                # html.H6("Change the value in the text box to see callbacks in action!"),
+                # html.Div(["Input: ", dcc.Input(id="my-input", value="initial value", type="text")]),
+                # html.Br(),
+                # html.Div(id="my-output"),
             ]
         ),
     ],
 )
 
 # The @app.callback decorator needs to be directly above the callback function declaration.
-@app.callback(Output("my-output", "children"), Input("my-input", "value"))
-def display_value(value):
-    return "Output: {}".format(value)
+# @app.callback(Output("my-output", "children"), Input("my-input", "value"))
+# def display_value(value):
+#    return "Output: {}".format(value)

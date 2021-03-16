@@ -41,51 +41,7 @@ layout = html.Div(
     [
         dash_table.DataTable(
             id="datatable-interactivity",
-            # columns=[{"name": i, "id": i} for i in dataframe.columns],
-            columns=[
-                {"name": "bioentry_id", "id": "bioentry_id", "presentation": "markdown"},
-                {"name": "peptide", "id": "peptide", "type": "text"},
-                {
-                    "name": "f061400",
-                    "id": "f061400",
-                    "type": "numeric",
-                },
-                {
-                    "name": "f061401",
-                    "id": "f061401",
-                    "type": "numeric",
-                },
-                {
-                    "name": "f061402",
-                    "id": "f061402",
-                    "type": "numeric",
-                },
-                {
-                    "name": "f061403",
-                    "id": "f061403",
-                    "type": "numeric",
-                },
-                {
-                    "name": "f061404",
-                    "id": "f061404",
-                    "type": "numeric",
-                },
-                {
-                    "name": "f061405",
-                    "id": "f061405",
-                    "type": "numeric",
-                },
-                {
-                    "name": "f061406",
-                    "id": "f061406",
-                    "type": "numeric",
-                },
-                {
-                    "name": "f061407",
-                    "id": "f061407",
-                    "type": "numeric",
-                },
-            ],
+            columns=[{"name": i, "id": i} for i in dataframe.columns],
             data=dataframe.to_dict("records"),
             filter_action="native",
             style_table={
@@ -98,7 +54,7 @@ layout = html.Div(
                 "overflow": "hidden",
                 "textOverflow": "ellipsis",
             },
-            editable=True,
+            editable=False,
             sort_action="native",
             sort_mode="multi",
             column_selectable="single",
