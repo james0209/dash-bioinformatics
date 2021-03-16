@@ -27,8 +27,14 @@ from app import app
 import sqlite3
 import dash_table
 
-record_dict = SeqIO.index("SubsetDatabase10.fasta", "fasta")
-input_seq_iterator = SeqIO.parse("SubsetDatabase10.fasta", "fasta")
+import seaborn as sns
+
+# import dash_alternative_viz as dav
+import plotly.express as px
+import dash_bio as dashbio
+
+# record_dict = SeqIO.index("SubsetDatabase10.fasta", "fasta")
+# input_seq_iterator = SeqIO.parse("SubsetDatabase10.fasta", "fasta")
 
 # server = BioSeqDatabase.open_database(driver="sqlite3", db="database.db")
 # db = server.new_database("proteins", description="Proteins from FASTA")
@@ -53,17 +59,28 @@ df = pd.read_sql("SELECT * FROM users", conn)
         ), """
 
 
-layout = html.Div(
-    [
-        html.H1("Hello Dash"),
-        ("Number of entries in database: %s" % (len(record_dict))),
-        html.H6("Change the value in the text box to see callbacks in action!"),
-        html.Div(["Input: ", dcc.Input(id="app2-input", value="initial value", type="text")]),
-        html.Br(),
-        html.Div(id="app2-output"),
-    ]
+tips = sns.load_dataset("tips")
+
+styles = {"pre": {"border": "thin lightgrey solid", "overflowX": "scroll"}}
+
+df = pd.DataFrame(
+    {"x": [1, 2, 1, 2], "y": [1, 2, 3, 4], "customdata": [1, 2, 3, 4], "fruit": ["apple", "apple", "orange", "orange"]}
 )
 
+fig = px.scatter(df, x="x", y="y", color="fruit", custom_data=["customdata"])
+
+fig.update_layout(clickmode="event+select")
+
+fig.update_traces(marker_size=20)
+
+layout = (
+    html.Div(
+        [
+            html.H1("Hello Dash"),
+            dcc.Graph(id="basic-interactions", figure=fig),
+        ]
+    ),
+)
 # The @app.callback decorator needs to be directly above the callback function declaration.
 @app.callback(Output("app2-output", "children"), Input("app2-input", "value"))
 def display_value(value):

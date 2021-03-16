@@ -14,6 +14,8 @@ import sqlite3
 
 # TODO: Make the Protein names href and link to the Protein Visulization page, passing the name as a paramter? To link them together
 
+# TODO: Use State to pass data between callbacks and apps
+
 conn = sqlite3.connect("database.db")
 c = conn.cursor()
 # df = pd.DataFrame(c.fetchall(), columns=['Brand','Price'])
