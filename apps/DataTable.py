@@ -39,35 +39,34 @@ df = df[
     ]
 ]  # prune columns for example
 
-layout = html.Div(
+layout = dbc.Container(
     [
-        dash_table.DataTable(
-            id="datatable-interactivity",
-            columns=[{"name": i, "id": i} for i in dataframe.columns],
-            data=dataframe.to_dict("records"),
-            filter_action="native",
-            style_table={
-                "height": 400,
-            },
-            style_data={
-                "width": "150px",
-                "minWidth": "150px",
-                "maxWidth": "150px",
-                "overflow": "hidden",
-                "textOverflow": "ellipsis",
-            },
-            editable=False,
-            sort_action="native",
-            sort_mode="multi",
-            column_selectable="single",
-            row_selectable="multi",
-            row_deletable=True,
-            selected_columns=[],
-            selected_rows=[],
-            page_action="native",
-            page_current=0,
-            page_size=10,
-        ),
+        html.Div(
+            [
+                dash_table.DataTable(
+                    id="datatable-interactivity",
+                    columns=[{"name": i, "id": i} for i in dataframe.columns],
+                    data=dataframe.to_dict("records"),
+                    filter_action="native",
+                    style_data={
+                        "overflow": "hidden",
+                        "textOverflow": "ellipsis",
+                    },
+                    editable=False,
+                    sort_action="native",
+                    sort_mode="multi",
+                    column_selectable="single",
+                    row_selectable="multi",
+                    row_deletable=True,
+                    selected_columns=[],
+                    selected_rows=[],
+                    page_action="native",
+                    page_current=0,
+                    page_size=15,
+                    fill_width=False,
+                ),
+            ]
+        )
     ]
 )
 

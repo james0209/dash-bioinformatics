@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 
 from app import app
-from apps import home, app2, onlineBlast, sequenceViewer, DataTable, localBlast, dotPlot
+from apps import home, insights, onlineBlast, sequenceViewer, DataTable, localBlast, dotPlot
 
 
 # building the navigation bar
@@ -17,6 +17,7 @@ dropdown = dbc.DropdownMenu(
         dbc.DropdownMenuItem("Local BLAST", href="/apps/localBlast"),
         dbc.DropdownMenuItem("Online BLAST", href="/apps/onlineBlast"),
         dbc.DropdownMenuItem("Dot Plot", href="/apps/dotPlot"),
+        dbc.DropdownMenuItem("Insights", href="/apps/insights"),
     ],
     nav=True,
     in_navbar=True,
@@ -78,8 +79,8 @@ app.layout = html.Div([dcc.Location(id="url", refresh=False), navbar, html.Div(i
 def display_page(pathname):
     if pathname == "/":
         return home.layout
-    elif pathname == "/apps/app2":
-        return app2.layout
+    elif pathname == "/apps/insights":
+        return insights.layout
     elif pathname == "/apps/onlineBlast":
         return onlineBlast.layout
     elif pathname == "/apps/localBlast":
