@@ -1,11 +1,14 @@
 import dash_core_components as dcc
 import dash_html_components as html
-import os
-import itertools
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 
 from app import app
+
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+from Bio.SeqUtils import GC, MeltingTemp, GC_skew, seq3
+from Bio.SeqUtils.ProtParam import ProteinAnalysis
 
 import sqlite3
 
@@ -14,49 +17,23 @@ import seaborn as sns
 # import dash_alternative_viz as dav
 import plotly.express as px
 import dash_bio as dashbio
+import plotly.graph_objects as go
+import pandas as pd
+from collections import deque
 
-df1 = px.data.iris()
-
-
-# record_dict = SeqIO.index("SubsetDatabase10.fasta", "fasta")
-# input_seq_iterator = SeqIO.parse("SubsetDatabase10.fasta", "fasta")
-
-# server = BioSeqDatabase.open_database(driver="sqlite3", db="database.db")
-# db = server.new_database("proteins", description="Proteins from FASTA")
-# count = db.load(SeqIO.parse("SubsetDatabaseFull.fasta", "fasta"))
-# print("Loaded %i records" % count)
-
-# server.commit()
-# server.close()
-
-""" conn = sqlite3.connect("database.db")
+conn = sqlite3.connect("database.db")
 cursor = conn.cursor()
-cursor.execute("SELECT * FROM users")
+# cursor.execute("SELECT bioentry_id, biodatabase_id FROM bioentry")
+df = pd.read_sql(
+    "SELECT bioentry.bioentry_id, biodatabase_id, seq FROM bioentry, biosequence WHERE bioentry.bioentry_id = biosequence.bioentry_id",
+    conn,
+)
 
-df = pd.read_sql("SELECT * FROM users", conn)
+df["initial"] = df["seq"].apply(ProteinAnalysis)
+# df.rename(columns={0: "bioentry_id", 1: "biodatabase_id", 2: "seq"}, inplace=True)
+# scores = pd.read_sql("", conn)
 
-
-
-        dash_table.DataTable(
-            id="table",
-            columns=[{"name": i, "id": i} for i in df.columns],
-            data=df.to_dict("records"),
-        ), """
-
-
-# tips = sns.load_dataset("tips")
-
-# styles = {"pre": {"border": "thin lightgrey solid", "overflowX": "scroll"}}
-
-# df = pd.DataFrame(
-#     {"x": [1, 2, 1, 2], "y": [1, 2, 3, 4], "customdata": [1, 2, 3, 4], "fruit": ["apple", "apple", "orange", "orange"]}
-# )
-
-# fig = px.scatter(df, x="x", y="y", color="fruit", custom_data=["customdata"])
-
-# fig.update_layout(clickmode="event+select")
-
-# fig.update_traces(marker_size=20)
+conn.close()
 
 layout = dbc.Container(
     [
@@ -65,6 +42,11 @@ layout = dbc.Container(
                 html.H1("Insights"),
                 # dcc.Graph(id="basic-interactions", figure=fig),
                 html.H2("MW against Interactivity"),
+                dcc.Dropdown(
+                    id="dropdown",
+                    options=[{"label": "A", "value": "A"}, {"label": "B", "value": "B"}],
+                    placeholder="Select a Base",
+                ),
                 dcc.Graph(id="scatter-plot"),
                 html.P("Petal Width:"),
                 dcc.RangeSlider(
@@ -79,8 +61,6 @@ layout = dbc.Container(
 @app.callback(Output("scatter-plot", "figure"), [Input("range-slider", "value")])
 def update_bar_chart(slider_range):
     low, high = slider_range
-    mask = (df1["petal_width"] > low) & (df1["petal_width"] < high)
-    fig = px.scatter(
-        df1[mask], x="sepal_width", y="sepal_length", color="species", size="petal_length", hover_data=["petal_width"]
-    )
+    mask = (df["bioentry_id"] > low) & (df["bioentry_id"] < high)
+    fig = px.scatter(df[mask], x="bioentry_id", y="biodatabase_id")
     return fig

@@ -1,9 +1,9 @@
 import dash_core_components as dcc
 import dash_html_components as html
-import dash
 from dash.dependencies import Input, Output, State
 from Bio import SeqIO
 import dash_bio as dashbio
+import base64
 
 from Bio.Blast.Applications import NcbiblastpCommandline
 
@@ -33,6 +33,7 @@ layout = html.Div(
                 dcc.Upload(
                     id="upload-data",
                     children=html.Div(["Drag or drop or ", html.A("Select a file")]),
+                    accept="FASTA",
                     style={
                         "width": "100%",
                         "height": "60px",
@@ -84,8 +85,29 @@ layout = html.Div(
 )
 def update_output(list_of_contents, list_of_names, list_of_dates):
     if list_of_contents is not None:
-        input_seq_iterator = SeqIO.parse("SubsetDatabase10.fasta", "fasta")
-        localBlast()
+        parse_contents()
+
+
+def parse_contents(contents, filename, date):
+    (
+        content_type,
+        content_string,
+    ) = contents.split(",")
+    print(f"name:{type(filename)}\n{filename}\n")
+    print(f"type:{type(content_type)}\n{content_type}\n")
+    print(f"string:{type(content_string)}\n{content_string}\n")
+    decoded = base64.b64decode(content_string)
+    print(f"decoded:{decoded}\n")
+    seq1 = SeqIO.parse(decoded, "fasta")
+    print(f"seq parsed {seq1}")
+    seq_str = str(decoded)
+    print(f"seq_str: {seq_str}")
+    # split into lines for output as P's
+    seq_arr = seq_str.split("\n")
+    # replace \n
+    seq_arr = [x.replace("\n", " ") for x in seq_arr]
+    for line in seq_arr:
+        print(line)
 
 
 if __name__ == "__main__":

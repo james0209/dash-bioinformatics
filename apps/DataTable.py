@@ -22,23 +22,6 @@ c = conn.cursor()
 dataframe = pd.read_sql("SELECT * FROM peptides", conn)
 # dataframe = pd.transforms.dataframe
 
-
-df = pd.read_csv("https://raw.githubusercontent.com/james0209/dash-bioinformatics/main/assets/peptides.csv")
-df = df[
-    [
-        "Protein",
-        "Peptide",
-        "35a12_90128_1_1_F (F061400)",
-        "35a12_90128_2_1_H (F061401)",
-        "35a12_90128_3_1_L (F061402)",
-        "35a12_90128_3_2_L (F061403)",
-        "35a12_Cu10_1_1_F (F061404)",
-        "35a12_Cu10_2_1_H (F061405)",
-        "35a12_Cu10_3_1_L (F061406)",
-        "35a12_Cu10_3_2_L (F061407)",
-    ]
-]  # prune columns for example
-
 layout = dbc.Container(
     [
         html.Div(
