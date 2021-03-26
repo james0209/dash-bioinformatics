@@ -9,18 +9,6 @@ layout = html.Div(
     [
         dbc.Container(
             [
-                dcc.Checklist(
-                    options=[
-                        {"label": "Only show proteins with length higher than ", "value": "protLengthOption"},
-                    ],
-                    value=["protLengthOption"],
-                ),
-                dcc.Input(
-                    id="dtrue",
-                    type="number",
-                    debounce=True,
-                    placeholder="Protein Length",
-                ),
                 # html.H6("Change the value in the text box to see callbacks in action!"),
                 # html.Div(["Input: ", dcc.Input(id="my-input", value="initial value", type="text")]),
                 # html.Br(),

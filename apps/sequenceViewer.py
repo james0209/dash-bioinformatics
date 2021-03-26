@@ -15,10 +15,47 @@ from app import app
 
 # TODO: Currently it is trying to load selections before it has been populated. Add this to callback perhaps?
 
+
+def get_peptides():
+    conn = sqlite3.connect("database.db")
+    peptides = pd.read_sql_query("SELECT peptide FROM peptides", conn)
+    conn.close()
+    return peptides
+
+
+def create_figure():
+    peptides = []
+
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+    df1 = pd.read_sql("SELECT bioentry_id, seq FROM biosequence WHERE bioentry_id = 41", conn)
+    df2 = pd.read_sql("SELECT bioentry_id, peptide FROM peptides WHERE bioentry_id = 41", conn)
+
+    seq = df1.loc[df1["bioentry_id"] == 41, "seq"].item()
+    # pep = df2.loc[df2["bioentry_id"] == 41, "peptide"].values[0]
+
+    for index, row in df2.iterrows():
+        # peptides.append(row["peptide"])
+        start = seq.find(row["peptide"])
+        end = start + len(row["peptide"])
+        peptides.append([start, end, "green"])
+    return dashbio.SequenceViewer(id="my-sequence-viewer", sequence=seq)
+
+
+df3 = get_peptides()
+
 layout = html.Div(
     [
         dbc.Container(
             [
+                html.Label(
+                    [
+                        "Peptide Dropdown",
+                        dcc.Dropdown(
+                            id="my-dynamic-dropdown", options=[{"label": i, "value": i} for i in df3.peptide.unique()]
+                        ),
+                    ]
+                ),
                 html.Div(id="viewer-module"),
                 html.Button("Sequence Viewer", id="btn-3"),
                 # dashbio.SequenceViewer(id="my-sequence-viewer", sequence=seq, selection=[]),
@@ -27,6 +64,17 @@ layout = html.Div(
         ),
     ]
 )
+
+
+@app.callback(
+    dash.dependencies.Output("my-dynamic-dropdown", "options"),
+    [dash.dependencies.Input("my-dynamic-dropdown", "search_value")],
+)
+def update_options(search_value):
+    if not search_value:
+        raise PreventUpdate
+    else:
+        return
 
 
 @app.callback(
@@ -47,22 +95,7 @@ def display_value(n_clicks):
     if n_clicks is None:
         raise PreventUpdate
     else:
-        peptides = []
-
-        conn = sqlite3.connect("database.db")
-        c = conn.cursor()
-        df1 = pd.read_sql("SELECT bioentry_id, seq FROM biosequence WHERE bioentry_id = 41", conn)
-        df2 = pd.read_sql("SELECT bioentry_id, peptide FROM peptides WHERE bioentry_id = 41", conn)
-
-        seq = df1.loc[df1["bioentry_id"] == 41, "seq"].item()
-        # pep = df2.loc[df2["bioentry_id"] == 41, "peptide"].values[0]
-
-        for index, row in df2.iterrows():
-            # peptides.append(row["peptide"])
-            start = seq.find(row["peptide"])
-            end = start + len(row["peptide"])
-            peptides.append([start, end, "green"])
-        return dashbio.SequenceViewer(id="my-sequence-viewer", sequence=seq, selection=peptides[1])
+        return create_figure()
 
 
 if __name__ == "__main__":

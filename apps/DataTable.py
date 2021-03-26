@@ -3,6 +3,7 @@ from dash.dependencies import Input, Output
 import dash_table
 import dash_html_components as html
 import dash_bootstrap_components as dbc
+import dash_core_components as dcc
 
 from app import app
 
@@ -26,6 +27,18 @@ layout = dbc.Container(
     [
         html.Div(
             [
+                dcc.Checklist(
+                    options=[
+                        {"label": " Only show proteins with length higher than ", "value": "protLengthOption"},
+                    ],
+                ),
+                dcc.Input(
+                    id="dtrue",
+                    type="number",
+                    debounce=True,
+                    placeholder="Protein Length",
+                ),
+                html.Br(),
                 dash_table.DataTable(
                     id="datatable-interactivity",
                     columns=[{"name": i, "id": i} for i in dataframe.columns],
