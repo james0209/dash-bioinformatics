@@ -16,22 +16,35 @@ from app import app
 # TODO: Currently it is trying to load selections before it has been populated. Add this to callback perhaps?
 
 
-def get_peptides():
+def get_peptides(bioentry_id):
     conn = sqlite3.connect("database.db")
-    peptides = pd.read_sql_query("SELECT peptide FROM peptides", conn)
+    queryPeptides = "SELECT peptide FROM peptides WHERE bioentry_id = ?"
+    params = [bioentry_id]
+    peptides = pd.read_sql(queryPeptides, conn, params=params)
     conn.close()
     return peptides
 
 
-def create_figure():
+def get_bioentries():
+    conn = sqlite3.connect("database.db")
+    bioentries = pd.read_sql_query("SELECT DISTINCT bioentry_id FROM bioentry", conn)
+    conn.close()
+    return bioentries
+
+
+def create_figure(bioentry_id):
     peptides = []
 
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
-    df1 = pd.read_sql("SELECT bioentry_id, seq FROM biosequence WHERE bioentry_id = 41", conn)
-    df2 = pd.read_sql("SELECT bioentry_id, peptide FROM peptides WHERE bioentry_id = 41", conn)
+    query1 = "SELECT bioentry_id, seq FROM biosequence WHERE bioentry_id = ?"
+    query2 = "SELECT bioentry_id, peptide FROM peptides WHERE bioentry_id = ?"
+    params = [bioentry_id]
+    df1 = pd.read_sql(query1, conn, params=params)
+    df2 = pd.read_sql(query2, conn, params=params)
+    # df2 = pd.read_sql("SELECT bioentry_id, peptide FROM peptides WHERE bioentry_id = ?", 41, conn)
 
-    seq = df1.loc[df1["bioentry_id"] == 41, "seq"].item()
+    seq = df1.loc[df1["bioentry_id"] == bioentry_id, "seq"].item()
     # pep = df2.loc[df2["bioentry_id"] == 41, "peptide"].values[0]
 
     for index, row in df2.iterrows():
@@ -39,10 +52,13 @@ def create_figure():
         start = seq.find(row["peptide"])
         end = start + len(row["peptide"])
         peptides.append([start, end, "green"])
-    return dashbio.SequenceViewer(id="my-sequence-viewer", sequence=seq)
+    return dashbio.SequenceViewer(
+        id="my-sequence-viewer",
+        sequence=seq,
+    )
 
 
-df3 = get_peptides()
+df3 = get_bioentries()
 
 layout = html.Div(
     [
@@ -50,9 +66,10 @@ layout = html.Div(
             [
                 html.Label(
                     [
-                        "Peptide Dropdown",
+                        "Bioentry Dropdown",
                         dcc.Dropdown(
-                            id="my-dynamic-dropdown", options=[{"label": i, "value": i} for i in df3.peptide.unique()]
+                            id="my-dynamic-dropdown",
+                            options=[{"label": i, "value": i} for i in df3.bioentry_id.unique()],
                         ),
                     ]
                 ),
@@ -60,6 +77,11 @@ layout = html.Div(
                 html.Button("Sequence Viewer", id="btn-3"),
                 # dashbio.SequenceViewer(id="my-sequence-viewer", sequence=seq, selection=[]),
                 html.Div(id="sequence-viewer-output"),
+                dcc.RadioItems(
+                    id="peptide-radio",
+                    labelStyle={"display": "block"},
+                    options=[],
+                ),
             ]
         ),
     ]
@@ -74,7 +96,7 @@ def update_options(search_value):
     if not search_value:
         raise PreventUpdate
     else:
-        return
+        return search_value
 
 
 @app.callback(
@@ -89,13 +111,56 @@ def update_output(value):
 
 @app.callback(
     dash.dependencies.Output("viewer-module", "children"),
-    [dash.dependencies.Input("btn-3", "n_clicks")],
+    [
+        dash.dependencies.Input("btn-3", "n_clicks"),
+        dash.dependencies.Input("my-dynamic-dropdown", "value"),
+    ],
 )
-def display_value(n_clicks):
+def display_value(n_clicks, bioentry_id):
     if n_clicks is None:
         raise PreventUpdate
     else:
-        return create_figure()
+        if bioentry_id is not None:
+            return create_figure(bioentry_id)
+        else:
+            raise PreventUpdate
+
+
+@app.callback(
+    dash.dependencies.Output("peptide-radio", "options"),
+    [
+        dash.dependencies.Input("my-dynamic-dropdown", "value"),
+        dash.dependencies.Input("btn-3", "n_clicks"),
+    ],
+)
+def display_peptides(bioentry_id, n_clicks):
+    if bioentry_id is None:
+        return []
+    else:
+        if n_clicks is None:
+            return []
+        else:
+            peptides = get_peptides(bioentry_id)
+            new_options = [{"label": i, "value": i} for i in peptides.peptide.unique()]
+            return new_options
+
+
+@app.callback(
+    dash.dependencies.Output("my-sequence-viewer", "selection"),
+    [
+        dash.dependencies.Input("peptide-radio", "value"),
+        dash.dependencies.Input("my-sequence-viewer", "sequence"),
+    ],
+)
+def highlightPeptide(radioSelection, sequence):
+    if radioSelection is None:
+        return []
+    else:
+
+        start = sequence.find(radioSelection)
+        end = start + len(radioSelection)
+        peptides = [start, end, "green"]
+        return peptides
 
 
 if __name__ == "__main__":
