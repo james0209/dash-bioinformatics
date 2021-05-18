@@ -18,7 +18,11 @@ layout = html.Div(
                 html.Br(),
                 html.A(
                     "Peptide Viewer",
-                    style={"color": "green", "text-decoration": "underline", "fontSize": 20},
+                    style={
+                        "color": "green",
+                        "text-decoration": "underline",
+                        "fontSize": 20,
+                    },
                     href="/apps/DataTable",
                     title="Peptide Viewer",
                 ),
@@ -31,7 +35,11 @@ layout = html.Div(
                 html.Br(),
                 html.A(
                     "Sequence Viewer",
-                    style={"color": "green", "text-decoration": "underline", "fontSize": 20},
+                    style={
+                        "color": "green",
+                        "text-decoration": "underline",
+                        "fontSize": 20,
+                    },
                     href="/apps/sequenceViewer",
                     title="Sequence Viewer",
                 ),
@@ -44,7 +52,11 @@ layout = html.Div(
                 html.Br(),
                 html.A(
                     "Alignment Viewer",
-                    style={"color": "green", "text-decoration": "underline", "fontSize": 20},
+                    style={
+                        "color": "green",
+                        "text-decoration": "underline",
+                        "fontSize": 20,
+                    },
                     href="/apps/alignment",
                     title="Alignment Viewer",
                 ),
@@ -57,7 +69,11 @@ layout = html.Div(
                 html.Br(),
                 html.A(
                     "Interaction Viewer",
-                    style={"color": "green", "text-decoration": "underline", "fontSize": 20},
+                    style={
+                        "color": "green",
+                        "text-decoration": "underline",
+                        "fontSize": 20,
+                    },
                     href="/apps/interactivity",
                     title="Interaction Viewer",
                 ),

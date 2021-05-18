@@ -17,7 +17,8 @@ def getScores():
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
     df = pd.read_sql_query(
-        "SELECT f061400, f061401, f061402, f061403, f061404, f061405, f061406, f061407 FROM peptides", conn
+        "SELECT f061400, f061401, f061402, f061403, f061404, f061405, f061406, f061407 FROM peptides",
+        conn,
     )
     options = []
     for col in df.columns:

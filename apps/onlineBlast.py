@@ -53,7 +53,9 @@ def runBlast(n_clicks):
 layout = html.Div(
     [
         html.Button("Run Online Blast", id="btn-1"),
-        dcc.Loading(id="loading-1", type="default", children=html.Div(id="loading-output-1")),
+        dcc.Loading(
+            id="loading-1", type="default", children=html.Div(id="loading-output-1")
+        ),
         html.Div(id="container"),
         html.Div(id="onlineBlast-output"),
     ]

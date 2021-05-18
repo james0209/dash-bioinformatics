@@ -50,10 +50,14 @@ layout = dbc.Container(
 
 
 @app.callback(
-    Output("datatable-interactivity", "style_data_conditional"), Input("datatable-interactivity", "selected_columns")
+    Output("datatable-interactivity", "style_data_conditional"),
+    Input("datatable-interactivity", "selected_columns"),
 )
 def update_styles(selected_columns):
-    return [{"if": {"column_id": i}, "background_color": "#D2F3FF"} for i in selected_columns]
+    return [
+        {"if": {"column_id": i}, "background_color": "#D2F3FF"}
+        for i in selected_columns
+    ]
 
 
 if __name__ == "__main__":

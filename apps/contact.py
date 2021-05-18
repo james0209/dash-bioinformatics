@@ -16,7 +16,9 @@ layout = html.Div(
                 """
                 ),
                 html.Br(),
-                html.Div(children="Thank you to the community working on BioPython, Dash, and Plotly."),
+                html.Div(
+                    children="Thank you to the community working on BioPython, Dash, and Plotly."
+                ),
             ]
         ),
     ],

@@ -69,7 +69,10 @@ layout = html.Div(
                         "Bioentry Dropdown",
                         dcc.Dropdown(
                             id="my-dynamic-dropdown",
-                            options=[{"label": i, "value": i} for i in df3.bioentry_id.unique()],
+                            options=[
+                                {"label": i, "value": i}
+                                for i in df3.bioentry_id.unique()
+                            ],
                         ),
                     ]
                 ),
