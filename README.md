@@ -1,12 +1,11 @@
-# Bioinformatic App in Dash
+# Bioinformatics App in Dash
 
-An bioinformatics project using _Dash_ & _BioPython_ with _Plotly & D3.js visulizations_.
+A bioinformatics project using _Dash_ & _BioPython_ with _Plotly_ visulizations\_.
 
-- TODO: FASTA Import
-- Online BLAST
-- Pairwise Alignment
-- TODO: Sequence Visulizations
-- TODO: Zoom/Pan
+- Sequence Viewer
+- Alignment Viewer
+- Table View
+- Interaction Viewer
 
 ## Development
 
@@ -32,11 +31,10 @@ python3 index.py
 
 ## References
 
-D3 :
+Dash - <https://plotly.com/dash/>
 
-- https://observablehq.com/@d3/learn-d3
-- https://observablehq.com/@d3/margin-convention
-- https://wattenberger.com/blog/d3
-- https://wattenberger.com/blog/d3-interactive-charts
-- https://spin.atomicobject.com/2017/07/20/d3-react-typescript/
-- https://medium.com/@kj_schmidt/show-data-on-mouse-over-with-d3-js-3bf598ff8fc2
+BioPython - <https://biopython.org/>
+
+BioSQL - <https://biosql.org/>
+
+The Sainsbury Laboratory - <http://www.tsl.ac.uk/>

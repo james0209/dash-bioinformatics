@@ -2,6 +2,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash
 from dash.dependencies import Input, Output
+import time
 
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIXML
@@ -12,6 +13,12 @@ blast_results = []
 
 
 @app.callback(Output("loading-output-1", "children"), [Input("btn-1", "n_clicks")])
+def input_triggers_spinner(value):
+    time.sleep(1)
+    return value
+
+
+@app.callback(Output("onlineBlast-output", "children"), [Input("btn-1", "n_clicks")])
 def runBlast(n_clicks):
     if n_clicks is not None:
         fasta_string = open("SubsetDatabase1.fasta").read()

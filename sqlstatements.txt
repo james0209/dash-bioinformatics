@@ -3578,3 +3578,17 @@ SELECT DISTINCT b.bioentry_id, pep.peptide, pep.f061400, pep.f061401, pep.f06140
 FROM unsorted_peptides pep, biosequence bioseq
 INNER JOIN bioentry b 
 ON INSTR(b.description, pep.protein) AND INSTR(bioseq.seq, pep.peptide)
+
+SELECT DISTINCT b.bioentry_id, pep.peptide, pep.f061400, pep.f061401, pep.f061402,
+		pep.f061403, pep.f061404, pep.f061405, pep.f061406, pep.f061407
+FROM unsorted_peptides pep, biosequence bioseq
+INNER JOIN bioentry b 
+ON unsorted_peptides pep WHERE b.description LIKE '%' || pep.peptide || '%'
+
+SELECT DISTINCT b.bioentry_id, pep.peptide, pep.f061400, pep.f061401, pep.f061402,
+		pep.f061403, pep.f061404, pep.f061405, pep.f061406, pep.f061407
+FROM unsorted_peptides pep, biosequence bioseq
+INNER JOIN bioentry b ON b.description LIKE CONCAT('%', pep.peptide, '%')
+
+SELECT DISTINCT * FROM bioentry b, unsorted_peptides pep WHERE b.identifier like '%' || pep.protein || '%' OR b.description like '%' || pep.protein || '%' 
+

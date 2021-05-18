@@ -10,35 +10,17 @@ from app import app
 import pandas as pd
 import sqlite3
 
-# TODO: Look into having csv as a pandas dataframe and use the derived_filter_query_structure in conjunction with pandas filters
-# https://dash.plotly.com/datatable/filtering
-
-# TODO: Make the Protein names href and link to the Protein Visulization page, passing the name as a paramter? To link them together
-
-# TODO: Use State to pass data between callbacks and apps
-
 conn = sqlite3.connect("database.db")
 c = conn.cursor()
 # df = pd.DataFrame(c.fetchall(), columns=['Brand','Price'])
 dataframe = pd.read_sql("SELECT * FROM peptides", conn)
+conn.close()
 # dataframe = pd.transforms.dataframe
 
 layout = dbc.Container(
     [
         html.Div(
             [
-                dcc.Checklist(
-                    options=[
-                        {"label": " Only show proteins with length higher than ", "value": "protLengthOption"},
-                    ],
-                ),
-                dcc.Input(
-                    id="dtrue",
-                    type="number",
-                    debounce=True,
-                    placeholder="Protein Length",
-                ),
-                html.Br(),
                 dash_table.DataTable(
                     id="datatable-interactivity",
                     columns=[{"name": i, "id": i} for i in dataframe.columns],
