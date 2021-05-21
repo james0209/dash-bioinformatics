@@ -3,9 +3,6 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 from Bio import SeqIO
 import dash_bio as dashbio
-import base64
-
-from Bio.Blast.Applications import NcbiblastpCommandline
 
 from app import app
 

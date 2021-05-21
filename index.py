@@ -14,9 +14,6 @@ from apps import (
     contact,
 )
 
-
-# building the navigation bar
-# https://github.com/facultyai/dash-bootstrap-components/blob/master/examples/advanced-component-usage/Navbars.py
 dropdown = dbc.DropdownMenu(
     children=[
         dbc.DropdownMenuItem("Home", href="/"),
@@ -38,11 +35,7 @@ navbar = dbc.Navbar(
                 # Use row and col to control vertical alignment of logo / brand
                 dbc.Row(
                     [
-                        dbc.Col(
-                            dbc.NavbarBrand(
-                                "Protein Bioinformatics App", className="ml-2"
-                            )
-                        ),
+                        dbc.Col(dbc.NavbarBrand("Protein Bioinformatics App", className="ml-2")),
                     ],
                     align="center",
                     no_gutters=True,
@@ -82,9 +75,7 @@ for i in [2]:
     )(toggle_navbar_collapse)
 
 
-app.layout = html.Div(
-    [dcc.Location(id="url", refresh=False), navbar, html.Div(id="page-content")]
-)
+app.layout = html.Div([dcc.Location(id="url", refresh=False), navbar, html.Div(id="page-content")])
 
 
 @app.callback(Output("page-content", "children"), Input("url", "pathname"))

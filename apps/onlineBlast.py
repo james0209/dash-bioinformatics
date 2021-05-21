@@ -53,32 +53,8 @@ def runBlast(n_clicks):
 layout = html.Div(
     [
         html.Button("Run Online Blast", id="btn-1"),
-        dcc.Loading(
-            id="loading-1", type="default", children=html.Div(id="loading-output-1")
-        ),
+        dcc.Loading(id="loading-1", type="default", children=html.Div(id="loading-output-1")),
         html.Div(id="container"),
         html.Div(id="onlineBlast-output"),
     ]
 )
-
-
-""" @app.callback(Output("container", "children"), Input("btn-1", "n_clicks"))
-def display(btn1):
-    ctx = dash.callback_context
-    if not ctx.triggered:
-        button_id = "No clicks yet"
-    else:
-        button_id = ctx.triggered[0]["prop_id"].split(".")[0]
-        runBlast(True)
-        return html.Div([html.H1("Running BLAST...")])
-
-    return html.Div(
-        [
-            html.Table(
-                [
-                    html.Tr([html.Th("Button 1"), html.Th("Most Recent Click")]),
-                    html.Tr([html.Td(btn1 or 0), html.Td(button_id)]),
-                ]
-            ),
-        ]
-    ) """
