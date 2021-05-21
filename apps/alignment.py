@@ -6,6 +6,7 @@ import dash_bio as dashbio
 
 from app import app
 
+# Reads in static FASTA sequence
 alignment_data = open("./SubsetDatabase1.fasta", "r", encoding="utf-8").read()
 
 layout = html.Div(
@@ -16,11 +17,10 @@ layout = html.Div(
                 html.Div(
                     className="column is-three-fifths is-centered",
                     children=[
-                        # Here is alignment chart!
                         dashbio.AlignmentChart(
                             id="fmt_alignment_viewer",
                             data=alignment_data,
-                            extension="fasta",  # If your data contains clustal output, turn it into "clustal". # If yo would like to change the color schema, work on here.
+                            extension="fasta",  # If your data contains clustal output, turn it into "clustal".
                             showgap=False,
                             showconsensus=True,  # If you would like to just enable alignment part, turn it into False.
                             showconservation=False,  # If you would like to just enable alignment part, turn it into False.
@@ -30,7 +30,7 @@ layout = html.Div(
                             overview=None,  # If you would like to change, turn it into "heatmap" or "slider".
                             height=200,
                             width="95%",
-                        ),  # ends of alignment chart
+                        ),
                     ],
                 ),
             ],

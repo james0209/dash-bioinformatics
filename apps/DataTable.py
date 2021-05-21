@@ -10,12 +10,11 @@ from app import app
 import pandas as pd
 import sqlite3
 
+# Fetch all peptides from db into dataframe
 conn = sqlite3.connect("database.db")
 c = conn.cursor()
-# df = pd.DataFrame(c.fetchall(), columns=['Brand','Price'])
 dataframe = pd.read_sql("SELECT * FROM peptides", conn)
 conn.close()
-# dataframe = pd.transforms.dataframe
 
 layout = dbc.Container(
     [
@@ -23,7 +22,9 @@ layout = dbc.Container(
             [
                 dash_table.DataTable(
                     id="datatable-interactivity",
+                    # Loop through dataframe, creating a column for each df column
                     columns=[{"name": i, "id": i} for i in dataframe.columns],
+                    # Convert dataframe to dict as pass as data argument
                     data=dataframe.to_dict("records"),
                     filter_action="native",
                     style_data={
@@ -54,10 +55,7 @@ layout = dbc.Container(
     Input("datatable-interactivity", "selected_columns"),
 )
 def update_styles(selected_columns):
-    return [
-        {"if": {"column_id": i}, "background_color": "#D2F3FF"}
-        for i in selected_columns
-    ]
+    return [{"if": {"column_id": i}, "background_color": "#D2F3FF"} for i in selected_columns]
 
 
 if __name__ == "__main__":

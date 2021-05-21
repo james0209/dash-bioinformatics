@@ -12,13 +12,11 @@ layout = html.Div(
                 html.H1(children="Contact"),
                 html.Div(
                     children="""
-                    This application was created by James Brookes - a BSc Computer Science graduate at the University of East Anglia.
+                    This application was created by James Brookes - a BSc Computer Science student at the University of East Anglia.
                 """
                 ),
                 html.Br(),
-                html.Div(
-                    children="Thank you to the community working on BioPython, Dash, and Plotly."
-                ),
+                html.Div(children="Thank you to the community working on BioPython, Dash, and Plotly."),
             ]
         ),
     ],

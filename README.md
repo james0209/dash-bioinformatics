@@ -37,4 +37,6 @@ BioPython - <https://biopython.org/>
 
 BioSQL - <https://biosql.org/>
 
+Dash Bootstrap Components - <https://github.com/facultyai/dash-bootstrap-components>
+
 The Sainsbury Laboratory - <http://www.tsl.ac.uk/>

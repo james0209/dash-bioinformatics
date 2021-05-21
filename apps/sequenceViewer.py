@@ -11,11 +11,7 @@ from dash.exceptions import PreventUpdate
 
 from app import app
 
-# seq = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-# TODO: Currently it is trying to load selections before it has been populated. Add this to callback perhaps?
-
-
+# Get peptides from db based on user input
 def get_peptides(bioentry_id):
     conn = sqlite3.connect("database.db")
     queryPeptides = "SELECT peptide FROM peptides WHERE bioentry_id = ?"
@@ -25,6 +21,7 @@ def get_peptides(bioentry_id):
     return peptides
 
 
+# Return a list of all bioentries from db for dropdown
 def get_bioentries():
     conn = sqlite3.connect("database.db")
     bioentries = pd.read_sql_query("SELECT DISTINCT bioentry_id FROM bioentry", conn)
@@ -32,25 +29,29 @@ def get_bioentries():
     return bioentries
 
 
+# Create sequence viewer component based on dropdown selection
 def create_figure(bioentry_id):
     peptides = []
 
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
+
+    # Create dataframes of bioentry_id, sequence, and peptides for given bioentry_id
     query1 = "SELECT bioentry_id, seq FROM biosequence WHERE bioentry_id = ?"
     query2 = "SELECT bioentry_id, peptide FROM peptides WHERE bioentry_id = ?"
     params = [bioentry_id]
     df1 = pd.read_sql(query1, conn, params=params)
     df2 = pd.read_sql(query2, conn, params=params)
-    # df2 = pd.read_sql("SELECT bioentry_id, peptide FROM peptides WHERE bioentry_id = ?", 41, conn)
 
+    # Get sequence from returned row in dataframe
     seq = df1.loc[df1["bioentry_id"] == bioentry_id, "seq"].item()
-    # pep = df2.loc[df2["bioentry_id"] == 41, "peptide"].values[0]
 
+    # Iterate over returned peptides
     for index, row in df2.iterrows():
-        # peptides.append(row["peptide"])
+        # Get start and end index's for the peptides in the sequence
         start = seq.find(row["peptide"])
         end = start + len(row["peptide"])
+        # Use this for highlighting the peptides
         peptides.append([start, end, "green"])
     return dashbio.SequenceViewer(
         id="my-sequence-viewer",
@@ -69,10 +70,7 @@ layout = html.Div(
                         "Bioentry Dropdown",
                         dcc.Dropdown(
                             id="my-dynamic-dropdown",
-                            options=[
-                                {"label": i, "value": i}
-                                for i in df3.bioentry_id.unique()
-                            ],
+                            options=[{"label": i, "value": i} for i in df3.bioentry_id.unique()],
                         ),
                     ]
                 ),
@@ -90,7 +88,7 @@ layout = html.Div(
     ]
 )
 
-
+# Update dropdown on selection
 @app.callback(
     dash.dependencies.Output("my-dynamic-dropdown", "options"),
     [dash.dependencies.Input("my-dynamic-dropdown", "search_value")],
@@ -102,6 +100,7 @@ def update_options(search_value):
         return search_value
 
 
+# Return mouse highlighted selection
 @app.callback(
     dash.dependencies.Output("sequence-viewer-output", "children"),
     [dash.dependencies.Input("my-sequence-viewer", "mouseSelection")],
@@ -112,6 +111,7 @@ def update_output(value):
     return "The mouse selection is {}.".format(value["selection"])
 
 
+# Create sequence viewer component when button is selected
 @app.callback(
     dash.dependencies.Output("viewer-module", "children"),
     [
@@ -129,6 +129,7 @@ def display_value(n_clicks, bioentry_id):
             raise PreventUpdate
 
 
+# Update peptide list if dropdown value is changed
 @app.callback(
     dash.dependencies.Output("peptide-radio", "options"),
     [
@@ -148,6 +149,7 @@ def display_peptides(bioentry_id, n_clicks):
             return new_options
 
 
+# Update selection to be highlighted via selected peptide
 @app.callback(
     dash.dependencies.Output("my-sequence-viewer", "selection"),
     [

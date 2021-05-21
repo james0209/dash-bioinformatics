@@ -12,7 +12,7 @@ import sqlite3
 import plotly.express as px
 import pandas as pd
 
-
+# Query db to get list of columns to populate dropdown
 def getScores():
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
@@ -23,16 +23,14 @@ def getScores():
     options = []
     for col in df.columns:
         options.append({"label": "{}".format(col, col), "value": col})
-    # df = pd.DataFrame(c.fetchall(), columns=['Brand','Price'])
     conn.close()
     return options
 
 
+# Create scatter graph with selected base
 def create_figure(base):
     conn = sqlite3.connect("database.db")
     cur = conn.cursor()
-    # resoverall = cur.execute("SELECT peptide, '%s' FROM peptides" % base)
-    # df = DataFrame(resoverall.fetchall())
     query1 = "SELECT peptide, %s FROM peptides" % base
     df = pd.read_sql(query1, conn)
 
@@ -40,6 +38,7 @@ def create_figure(base):
     return data
 
 
+# Get list to populate dropdown
 options = getScores()
 
 layout = dbc.Container(
