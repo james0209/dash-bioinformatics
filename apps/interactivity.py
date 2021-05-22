@@ -57,6 +57,7 @@ layout = dbc.Container(
                 ),
                 html.Label(id="my_label1"),
                 html.Button("Show Plot", id="plot-btn"),
+                html.P(children="Hint: Hover over the data points to learn more"),
             ]
         ),
         dcc.Graph(id="graph"),

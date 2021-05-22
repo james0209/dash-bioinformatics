@@ -78,6 +78,8 @@ layout = html.Div(
                 html.Button("Sequence Viewer", id="btn-3"),
                 # dashbio.SequenceViewer(id="my-sequence-viewer", sequence=seq, selection=[]),
                 html.Div(id="sequence-viewer-output"),
+                html.Br(),
+                html.P(children="Select a peptide below to highight it within the sequence"),
                 dcc.RadioItems(
                     id="peptide-radio",
                     labelStyle={"display": "block"},
