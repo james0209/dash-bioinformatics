@@ -2,8 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-blastdb/
-./blastdb
 
 # C extensions
 *.so
@@ -60,10 +58,6 @@ cover/
 # Django stuff:
 *.log
 local_settings.py
-database.db
-.db
-db.sqlite3
-db.sqlite3-journal
 
 # Flask stuff:
 instance/
