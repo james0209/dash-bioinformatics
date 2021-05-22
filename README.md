@@ -32,12 +32,11 @@ git clone https://github.com/james0209/dash-bioinformatics.git
 git clone https://github.com/james0209/dash-bioinformatics.git
 
 # using pip/python
-pip install venv
 python -m venv env
     # linux/mac
     source env/bin/activate
     # windows
-    env\Scripts\activate
+    .\env\Scripts\activate
 cd dash-bioinformatics
 pip install -r requirements.txt
 ```
