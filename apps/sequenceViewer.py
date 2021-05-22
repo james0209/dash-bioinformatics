@@ -166,7 +166,7 @@ def highlightPeptide(radioSelection, sequence):
 
         start = sequence.find(radioSelection)
         end = start + len(radioSelection)
-        peptides = [start, end, "green"]
+        peptides = [start, end, "orange"]
         return peptides
 
 
