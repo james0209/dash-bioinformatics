@@ -7,7 +7,6 @@ from app import app
 from apps import (
     home,
     interactivity,
-    onlineBlast,
     sequenceViewer,
     DataTable,
     alignment,
@@ -84,8 +83,6 @@ def display_page(pathname):
         return home.layout
     elif pathname == "/apps/interactivity":
         return interactivity.layout
-    elif pathname == "/apps/onlineBlast":
-        return onlineBlast.layout
     elif pathname == "/apps/alignment":
         return alignment.layout
     elif pathname == "/apps/contact":

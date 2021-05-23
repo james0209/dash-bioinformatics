@@ -6,10 +6,10 @@ The start point for the application is in the index.py file.
 
 There are four main components to this application:
 
-- Sequence Viewer
-- Alignment Viewer
-- Table View
-- Interaction Viewer
+- Sequence Viewer (sequenceViewer.py)
+- Alignment Viewer (alignment.py)
+- Table View (DataTable.py)
+- Interaction Viewer (interactivity.py)
 
 The code for these can be found in the "apps" folder.
 
@@ -17,6 +17,9 @@ The database included in this repo was built using the BioSQL schema, with an ex
 
 A new database file can be created by running the init_db.py file. This will create an empty database. To populate this,
 the sql statements within sqlstatements.txt must be run.
+
+A blastdb folder has been included within this repo, although it is not currently used in the project. The blastdb was created
+to allow Local BLAST functionality to be added in future development.
 
 Dependabot has been set up with this repo through the file within the .github folder.
 
